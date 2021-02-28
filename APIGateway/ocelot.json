@@ -1,0 +1,45 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:5001"
+  },
+  "Routes": [
+    // Weather service 1
+    {
+      "DownstreamPathTemplate": "/WeatherForecast", // Microservice 1
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "UpstreamPathTemplate": "/api/WeatherForecast", // API Gateway access point for Microservice 1
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "FileCacheOptions": {
+        "TtlSeconds": 30
+      },
+      //"LoadBalancer": "Round Robin",
+      //"LoadBalancer": "Least Connection"
+    },
+    // Weather service 2
+    {
+      "DownstreamPathTemplate": "/WeatherForecast", // Microservice 2
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5006
+        }
+      ],
+      "UpstreamPathTemplate": "/api/WeatherForecast1", // API Gateway access point for Microservice 2
+      "UpstreamHttpMethod": [ "Get" ]
+    }
+  ]
+}
